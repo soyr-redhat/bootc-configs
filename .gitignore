@@ -1,0 +1,19 @@
+# Build artifacts
+*.qcow2
+*.raw
+*.iso
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local testing
+test-output/
+*.log
