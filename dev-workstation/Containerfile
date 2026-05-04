@@ -1,0 +1,60 @@
+FROM quay.io/fedora/fedora-bootc:41
+
+# Install comprehensive development tools
+RUN dnf install -y \
+    # Version control
+    git \
+    git-lfs \
+    gh \
+    # Editors
+    vim-enhanced \
+    neovim \
+    # Languages
+    python3.11 \
+    python3.11-pip \
+    golang \
+    nodejs \
+    npm \
+    rust \
+    cargo \
+    # Build tools
+    gcc \
+    gcc-c++ \
+    make \
+    cmake \
+    ninja-build \
+    # Container tools
+    podman \
+    buildah \
+    skopeo \
+    # Utilities
+    tmux \
+    htop \
+    ripgrep \
+    fd-find \
+    bat \
+    fzf \
+    && dnf clean all
+
+# Install common Python development packages
+RUN pip3 install --no-cache-dir \
+    pipenv \
+    poetry \
+    black \
+    ruff \
+    pytest \
+    ipython
+
+# Enable SSH and podman socket
+RUN systemctl enable sshd && \
+    systemctl enable podman.socket
+
+# Create development workspace
+RUN mkdir -p /workspace && chmod 1777 /workspace
+
+# Configure git defaults
+RUN git config --system init.defaultBranch main && \
+    git config --system pull.rebase false
+
+LABEL org.opencontainers.image.title="Dev Workstation Bootc"
+LABEL org.opencontainers.image.description="Full-featured bootable development environment"
