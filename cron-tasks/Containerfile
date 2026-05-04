@@ -1,0 +1,50 @@
+FROM quay.io/fedora/fedora-bootc:41
+
+# Install cron and utilities for task automation
+RUN dnf install -y \
+    cronie \
+    cronie-anacron \
+    python3.11 \
+    python3.11-pip \
+    git \
+    curl \
+    wget \
+    jq \
+    && dnf clean all
+
+# Enable cron daemon
+RUN systemctl enable crond
+
+# Install common Python packages for automation scripts
+RUN pip3 install --no-cache-dir \
+    requests \
+    pyyaml \
+    click \
+    schedule
+
+# Create directories for cron scripts
+RUN mkdir -p /opt/cron-scripts /var/log/cron-tasks
+
+# Example: Add a custom cron job
+# COPY scripts/backup.sh /opt/cron-scripts/
+# RUN chmod +x /opt/cron-scripts/backup.sh && \
+#     echo "0 2 * * * root /opt/cron-scripts/backup.sh >> /var/log/cron-tasks/backup.log 2>&1" >> /etc/crontab
+
+# Example: Add a system monitoring cron job
+RUN echo "*/5 * * * * root /usr/bin/df -h > /var/log/cron-tasks/disk-usage.log" >> /etc/crontab
+
+# Optional: Configure log rotation for cron task logs
+COPY <<EOF /etc/logrotate.d/cron-tasks
+/var/log/cron-tasks/*.log {
+    daily
+    missingok
+    rotate 7
+    compress
+    delaycompress
+    notifempty
+    create 0644 root root
+}
+EOF
+
+LABEL org.opencontainers.image.title="Cron Tasks Bootc"
+LABEL org.opencontainers.image.description="Lightweight bootable container for scheduled task automation"
