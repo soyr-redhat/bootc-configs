@@ -4,9 +4,9 @@ FROM quay.io/fedora/fedora-bootc:41
 RUN dnf install -y \
     git \
     vim-enhanced \
-    python3.11 \
-    python3.11-pip \
-    python3.11-devel \
+    python3 \
+    python3-pip \
+    python3-devel \
     gcc \
     gcc-c++ \
     cmake \
@@ -14,7 +14,7 @@ RUN dnf install -y \
     && dnf clean all
 
 # Create a virtual environment for Python packages
-RUN python3.11 -m venv /opt/pytorch-env
+RUN python3 -m venv /opt/pytorch-env
 
 # Install PyTorch and related ML packages
 RUN /opt/pytorch-env/bin/pip install --no-cache-dir \
