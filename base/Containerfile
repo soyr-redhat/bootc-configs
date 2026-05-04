@@ -1,0 +1,28 @@
+FROM quay.io/fedora/fedora-bootc:41
+
+# Add essential system tools
+RUN dnf install -y \
+    vim-enhanced \
+    git \
+    tmux \
+    htop \
+    curl \
+    wget \
+    bind-utils \
+    net-tools \
+    tcpdump \
+    && dnf clean all
+
+# Configure SSH for remote access
+RUN systemctl enable sshd
+
+# Set up a default user (optional)
+# RUN useradd -m -G wheel adminuser && \
+#     echo "adminuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/adminuser
+
+# Add any custom systemd services or configurations here
+# COPY custom.service /etc/systemd/system/
+# RUN systemctl enable custom.service
+
+LABEL org.opencontainers.image.title="Fedora Bootc Base"
+LABEL org.opencontainers.image.description="Minimal bootable Fedora container with essential tools"
