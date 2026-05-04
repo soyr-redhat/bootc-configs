@@ -2,17 +2,6 @@
 
 A collection of bootable container images based on Fedora/RHEL for different use cases.
 
-## What is bootc?
-
-[bootc](https://github.com/containers/bootc) allows you to build bootable operating system images from OCI container images. You can deploy these directly to bare metal, VMs, or cloud instances.
-
-## Available Configurations
-
-- **base** - Minimal Fedora bootc base image with essential tools
-- **pytorch** - ML/AI workstation with PyTorch, CUDA, and development tools
-- **cron-tasks** - Lightweight system for running scheduled tasks and automation
-- **dev-workstation** - Full development environment with languages and tools
-
 ## Building Images
 
 ```bash
