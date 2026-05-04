@@ -1,0 +1,47 @@
+FROM quay.io/fedora/fedora-bootc:41
+
+# Install development tools and dependencies
+RUN dnf install -y \
+    git \
+    vim-enhanced \
+    python3.11 \
+    python3.11-pip \
+    python3.11-devel \
+    gcc \
+    gcc-c++ \
+    cmake \
+    ninja-build \
+    && dnf clean all
+
+# Create a virtual environment for Python packages
+RUN python3.11 -m venv /opt/pytorch-env
+
+# Install PyTorch and related ML packages
+RUN /opt/pytorch-env/bin/pip install --no-cache-dir \
+    torch \
+    torchvision \
+    torchaudio \
+    numpy \
+    pandas \
+    scikit-learn \
+    jupyter \
+    matplotlib \
+    seaborn
+
+# Optional: Install CUDA support (uncomment if needed)
+# RUN dnf install -y \
+#     https://developer.download.nvidia.com/compute/cuda/repos/fedora37/x86_64/cuda-fedora37.repo && \
+#     dnf install -y cuda-toolkit-12-6 && \
+#     dnf clean all
+
+# Add activation script for the environment
+RUN echo 'source /opt/pytorch-env/bin/activate' >> /etc/profile.d/pytorch.sh
+
+# Enable SSH for remote development
+RUN systemctl enable sshd
+
+# Create a workspace directory
+RUN mkdir -p /workspace && chmod 1777 /workspace
+
+LABEL org.opencontainers.image.title="PyTorch Bootc Workstation"
+LABEL org.opencontainers.image.description="Bootable ML/AI development environment with PyTorch"
