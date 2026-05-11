@@ -43,5 +43,10 @@ RUN systemctl enable sshd
 # Create a workspace directory
 RUN mkdir -p /workspace && chmod 1777 /workspace
 
+# Set up admin user with password "admin"
+RUN useradd -m -G wheel admin && \
+    echo "admin:admin" | chpasswd && \
+    echo "admin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/admin
+
 LABEL org.opencontainers.image.title="PyTorch Bootc Workstation"
 LABEL org.opencontainers.image.description="Bootable ML/AI development environment with PyTorch"

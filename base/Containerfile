@@ -16,9 +16,10 @@ RUN dnf install -y \
 # Configure SSH for remote access
 RUN systemctl enable sshd
 
-# Set up a default user (optional)
-# RUN useradd -m -G wheel adminuser && \
-#     echo "adminuser ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/adminuser
+# Set up admin user with password "admin"
+RUN useradd -m -G wheel admin && \
+    echo "admin:admin" | chpasswd && \
+    echo "admin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/admin
 
 # Add any custom systemd services or configurations here
 # COPY custom.service /etc/systemd/system/

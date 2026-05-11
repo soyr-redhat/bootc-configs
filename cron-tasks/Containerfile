@@ -12,8 +12,13 @@ RUN dnf install -y \
     jq \
     && dnf clean all
 
-# Enable cron daemon
-RUN systemctl enable crond
+# Enable cron daemon and SSH
+RUN systemctl enable crond sshd
+
+# Set up admin user with password "admin"
+RUN useradd -m -G wheel admin && \
+    echo "admin:admin" | chpasswd && \
+    echo "admin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/admin
 
 # Install common Python packages for automation scripts
 RUN pip3 install --no-cache-dir \

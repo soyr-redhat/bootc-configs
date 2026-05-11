@@ -57,5 +57,10 @@ RUN mkdir -p /workspace && chmod 1777 /workspace
 RUN git config --system init.defaultBranch main && \
     git config --system pull.rebase false
 
+# Set up admin user with password "admin"
+RUN useradd -m -G wheel admin && \
+    echo "admin:admin" | chpasswd && \
+    echo "admin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/admin
+
 LABEL org.opencontainers.image.title="Dev Workstation Bootc"
 LABEL org.opencontainers.image.description="Full-featured bootable development environment"
