@@ -14,8 +14,8 @@ RUN dnf install -y \
     && dnf clean all
 
 # Install NVIDIA CUDA toolkit
-RUN dnf install -y \
-    https://developer.download.nvidia.com/compute/cuda/repos/fedora41/x86_64/cuda-fedora41.repo \
+RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/fedora41/x86_64/cuda-fedora41.repo \
+    -o /etc/yum.repos.d/cuda-fedora41.repo \
     && dnf install -y cuda-toolkit-12-8 \
     && dnf clean all
 
