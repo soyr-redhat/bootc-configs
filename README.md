@@ -10,17 +10,17 @@ cd <config-name>
 podman build -t bootc-<config-name> .
 
 # Or use the Makefile
-make build-pytorch
+make build-pytorch-cpu
 ```
 
 ## Installing to a System
 
 ```bash
 # Install to a disk/partition
-sudo bootc install to-disk --generic-image ghcr.io/soyr-redhat/bootc-pytorch /dev/vda
+sudo bootc install to-disk --generic-image ghcr.io/soyr-redhat/bootc-pytorch-cpu /dev/vda
 
 # Or install to existing system
-sudo bootc switch ghcr.io/soyr-redhat/bootc-pytorch
+sudo bootc switch ghcr.io/soyr-redhat/bootc-pytorch-cpu
 ```
 
 ## Updating
@@ -33,10 +33,12 @@ sudo bootc upgrade
 ## Repository Structure
 
 ```
-bootc-fed/
+bootc-configs/
 ├── base/
 │   └── Containerfile
-├── pytorch/
+├── pytorch-cpu/
+│   └── Containerfile
+├── pytorch-cuda/
 │   └── Containerfile
 ├── cron-tasks/
 │   └── Containerfile

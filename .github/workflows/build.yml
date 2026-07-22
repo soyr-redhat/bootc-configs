@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        config: [base, pytorch, cron-tasks, dev-workstation]
+        config: [base, pytorch-cpu, pytorch-cuda, cron-tasks, dev-workstation]
 
     steps:
       - name: Checkout repository
