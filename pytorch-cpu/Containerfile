@@ -16,9 +16,10 @@ RUN dnf install -y \
 # Create a virtual environment for Python packages
 RUN python3 -m venv /opt/pytorch-env
 
-# Install PyTorch and related ML packages
+# Install PyTorch (CPU-only) and related ML packages
 RUN /opt/pytorch-env/bin/pip install --no-cache-dir \
-    torch \
+    torch --index-url https://download.pytorch.org/whl/cpu \
+    && /opt/pytorch-env/bin/pip install --no-cache-dir \
     torchvision \
     torchaudio \
     numpy \
@@ -27,12 +28,6 @@ RUN /opt/pytorch-env/bin/pip install --no-cache-dir \
     jupyter \
     matplotlib \
     seaborn
-
-# Optional: Install CUDA support (uncomment if needed)
-# RUN dnf install -y \
-#     https://developer.download.nvidia.com/compute/cuda/repos/fedora37/x86_64/cuda-fedora37.repo && \
-#     dnf install -y cuda-toolkit-12-6 && \
-#     dnf clean all
 
 # Add activation script for the environment
 RUN echo 'source /opt/pytorch-env/bin/activate' >> /etc/profile.d/pytorch.sh
@@ -49,5 +44,5 @@ RUN useradd -m -G wheel admin && \
     echo "admin ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/admin && \
     sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
 
-LABEL org.opencontainers.image.title="PyTorch Bootc Workstation"
-LABEL org.opencontainers.image.description="Bootable ML/AI development environment with PyTorch"
+LABEL org.opencontainers.image.title="PyTorch CPU Bootc Workstation"
+LABEL org.opencontainers.image.description="Bootable ML/AI development environment with PyTorch (CPU-only)"
