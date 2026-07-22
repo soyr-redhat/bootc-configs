@@ -37,14 +37,16 @@ RUN dnf install -y \
     fzf \
     && dnf clean all
 
-# Install common Python development packages
-RUN pip3 install --no-cache-dir \
+# Install common Python development packages in a venv
+RUN python3 -m venv /opt/dev-env
+RUN /opt/dev-env/bin/pip install --no-cache-dir \
     pipenv \
     poetry \
     black \
     ruff \
     pytest \
     ipython
+RUN echo 'source /opt/dev-env/bin/activate' >> /etc/profile.d/dev-env.sh
 
 # Enable SSH and podman socket
 RUN systemctl enable sshd && \
