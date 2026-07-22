@@ -24,7 +24,6 @@ RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/fedora41
     libcurand-12-8 \
     libcusparse-12-8 \
     libcusolver-12-8 \
-    libnccl \
     && dnf clean all
 
 ENV PATH="/usr/local/cuda-12.8/bin:${PATH}"
