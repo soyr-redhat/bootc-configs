@@ -13,11 +13,22 @@ RUN dnf install -y \
     ninja-build \
     && dnf clean all
 
-# Install NVIDIA CUDA toolkit
+# Install NVIDIA CUDA libraries (minimal — no GUI dependencies)
 RUN curl -fsSL https://developer.download.nvidia.com/compute/cuda/repos/fedora41/x86_64/cuda-fedora41.repo \
     -o /etc/yum.repos.d/cuda-fedora41.repo \
-    && dnf install -y cuda-toolkit-12-8 \
+    && dnf install -y \
+    cuda-cudart-12-8 \
+    cuda-nvcc-12-8 \
+    cuda-cudart-devel-12-8 \
+    libcublas-12-8 \
+    libcurand-12-8 \
+    libcusparse-12-8 \
+    libcusolver-12-8 \
+    libnccl \
     && dnf clean all
+
+ENV PATH="/usr/local/cuda-12.8/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda-12.8/lib64:${LD_LIBRARY_PATH}"
 
 # Create a virtual environment for Python packages
 RUN python3 -m venv /opt/pytorch-env
